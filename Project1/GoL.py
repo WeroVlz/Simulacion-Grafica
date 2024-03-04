@@ -184,7 +184,7 @@ def generate_iteration_log(frame, output_file, pattern_count):
         file.write("\n|--------------+----------+----------|")
         for pattern_name, pattern_count in pattern_count.items():
             if total_pattern_count != 0:
-                percentage = int(pattern_count / total_pattern_count) * 100
+                percentage = int((pattern_count / total_pattern_count) * 100)
             else:
                 percentage = 0
             file.write(f"\n| {pattern_name.ljust(max_pattern_length)} | {str(pattern_count).ljust(3)}" +
