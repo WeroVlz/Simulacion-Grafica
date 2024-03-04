@@ -1,3 +1,11 @@
+"""
+    Team names:
+        Edgar Velazquez Mercado
+        Pablo Raschid Llamas Aun
+        José Iván Andrade Rojas
+"""
+
+
 from argparse import ArgumentParser, Namespace
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -138,7 +146,6 @@ def detect_patterns(grid, width, height):
 
 def generate_grid(width, height, cells_array):
     grid = np.zeros((width, height), dtype=np.uint8)
-    print(grid.shape)
     for cell in cells_array:
         grid[cell[0], cell[1]] = 255
     return grid
@@ -155,7 +162,7 @@ def check_neighbors(updated_grid, grid, width, height):
                         live_neighbours += 1
             if grid[row_index][cell_index] == 255:
                 if not (live_neighbours == 2 or live_neighbours == 3):
-                    updated_grid[row_index+1][cell_index+1] = 0
+                    updated_grid[row_index][cell_index] = 0
 
             if grid[row_index][cell_index] == 0:
                 if live_neighbours == 3:
@@ -227,7 +234,7 @@ def main():
         op_file.write(f"Simulation at {date.today()}")
         op_file.write(f"\nUniverse size: {width} x {height}")
 
-    update_interval = 500
+    update_interval = 20
 
     if generations < 200:
         generations = 200
