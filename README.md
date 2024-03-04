@@ -1,1 +1,1 @@
-Class exercises, homework and projects if Graphic Simulation class.
+Class exercises, homework and projects of Graphic Simulation class.
