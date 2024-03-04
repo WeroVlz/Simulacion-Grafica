@@ -243,14 +243,15 @@ def main():
         generations = int(file.readline().rstrip())
         for line in file:
             cell_coords = line.rstrip().split(' ')
-            cell_array.append([int(cell_coords[0]), int(cell_coords[1])])
+            if cell_coords != ' ':
+                cell_array.append([int(cell_coords[0]), int(cell_coords[1])])
 
     with open(output_file, 'a') as op_file:
         op_file.truncate(0)
         op_file.write(f"Simulation at {date.today()}")
         op_file.write(f"\nUniverse size: {width} x {height}")
 
-    update_interval = 10
+    update_interval = 5
 
     if generations < 200:
         generations = 200
