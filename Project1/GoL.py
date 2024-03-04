@@ -5,7 +5,6 @@
         José Iván Andrade Rojas
 """
 
-
 from argparse import ArgumentParser, Namespace
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
@@ -128,17 +127,34 @@ def define_patterns():
 
 def detect_patterns(grid, width, height):
     patterns = define_patterns()
+    rotate_3_times = ["Loaf", "Boat", "Glider", "LW Spaceship"]
+    rotate_1_time = ["Beehive", "Toad", "Beacon"]
     pattern_count = {}
-    match = True
     for pattern in patterns:
         count = 0
         for p in patterns.get(pattern):
-            p_width, p_height = p.shape
-            for i in range(width - p_width + 1):
-                for j in range(height - p_height + 1):
-                    if np.all(grid[i:i + p_width, j:j + p_height] == p):
-                        count += 1
-
+            if pattern in rotate_3_times:
+                for i in range(4):
+                    p_width, p_height = p.shape
+                    for j in range(width - p_width + 1):
+                        for k in range(height - p_height + 1):
+                            if np.all(grid[j:j + p_width, k:k + p_height] == p):
+                                count += 1
+                    p = np.rot90(p, k=1)
+            elif pattern in rotate_1_time:
+                for i in range(2):
+                    p_width, p_height = p.shape
+                    for i in range(width - p_width + 1):
+                        for j in range(height - p_height + 1):
+                            if np.all(grid[i:i + p_width, j:j + p_height] == p):
+                                count += 1
+                    p = np.rot90(p, k=1)
+            else:
+                p_width, p_height = p.shape
+                for i in range(width - p_width + 1):
+                    for j in range(height - p_height + 1):
+                        if np.all(grid[i:i + p_width, j:j + p_height] == p):
+                            count += 1
         pattern_count[pattern] = count
 
     return pattern_count
@@ -234,7 +250,7 @@ def main():
         op_file.write(f"Simulation at {date.today()}")
         op_file.write(f"\nUniverse size: {width} x {height}")
 
-    update_interval = 20
+    update_interval = 10
 
     if generations < 200:
         generations = 200
