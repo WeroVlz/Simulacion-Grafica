@@ -161,28 +161,36 @@ def detect_patterns(grid, width, height):
 
 
 def generate_grid(width, height, cells_array):
-    grid = np.zeros((width, height), dtype=np.uint8)
+    grid = np.zeros((width+2, height+2), dtype=np.uint8)
     for cell in cells_array:
-        grid[cell[0], cell[1]] = 255
+        grid[cell[0]+1, cell[1]+1] = 255
     return grid
 
 
 def check_neighbors(updated_grid, grid, width, height):
     around = [[-1, 0], [-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1]]
-    for row_index, row in enumerate(grid):
+
+    start_row = 1
+    end_row = grid.shape[0] - 1
+    start_col = 1
+    end_col = grid.shape[1] - 1
+    center_subgrid = grid[start_row:end_row, start_col:end_col]
+
+    for row_index, row in enumerate(center_subgrid):
         for cell_index, cell in enumerate(row):
             live_neighbours = 0
             for neighbor in around:
                 if 0 <= row_index + neighbor[0] <= width - 1 and 0 <= cell_index + neighbor[1] <= height - 1:
-                    if grid[row_index + neighbor[0]][cell_index + neighbor[1]] == 255:
+                    if center_subgrid[row_index + neighbor[0]][cell_index + neighbor[1]] == 255:
                         live_neighbours += 1
-            if grid[row_index][cell_index] == 255:
-                if not (live_neighbours == 2 or live_neighbours == 3):
-                    updated_grid[row_index][cell_index] = 0
 
-            if grid[row_index][cell_index] == 0:
+            if center_subgrid[row_index][cell_index] == 255:
+                if not (live_neighbours == 2 or live_neighbours == 3):
+                    updated_grid[row_index+1][cell_index+1] = 0
+
+            if center_subgrid[row_index][cell_index] == 0:
                 if live_neighbours == 3:
-                    updated_grid[row_index][cell_index] = 255
+                    updated_grid[row_index+1][cell_index+1] = 255
     return updated_grid
 
 
